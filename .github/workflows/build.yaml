@@ -1,4 +1,4 @@
-name: 'docker'
+name: 'build'
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  docker:
+  build:
     runs-on: ubuntu-latest
     permissions:
       packages: write
@@ -20,4 +20,4 @@ jobs:
         run: |
           ./build_image.sh
       - name: Check outputs
-        run: ls -l output/
+        run: ls -l
