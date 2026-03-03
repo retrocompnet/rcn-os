@@ -19,5 +19,23 @@ jobs:
         id: build
         run: |
           ./build_image.sh
-      - name: Check outputs
-        run: ls -l
+      - name: Check outputs and ungzip
+        run: |
+          gunzip sdcard.img.gz
+          mv sdcard.img rcn_os.img
+          gunzip sdcard_update.img.gz
+          mv sdcard_update.img rcn_os_update.img
+          ls -l
+      - name: Upload full image
+        uses: actions/upload-artifact@v6
+        with:
+          name: rcn_os-${{ github.sha }}
+          path: |
+            rcn_os.img
+      - name: Upload update
+        uses: actions/upload-artifact@v6
+        with:
+          name: rcn_os-${{ github.sha }}
+          path: |
+            rcn_os_update.img
+          if-no-files-found: error
