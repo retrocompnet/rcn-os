@@ -29,13 +29,13 @@ jobs:
       - name: Upload full image
         uses: actions/upload-artifact@v6
         with:
-          name: rcn_os-${{ github.sha }}
+          name: rcn_os
           path: |
             rcn_os.img
       - name: Upload update
         uses: actions/upload-artifact@v6
         with:
-          name: rcn_os-${{ github.sha }}
+          name: rcn_os_update
           path: |
             rcn_os_update.img
           if-no-files-found: error
