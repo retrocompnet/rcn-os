@@ -8,16 +8,15 @@ on:
 jobs:
   docker:
     runs-on: ubuntu-latest
+    permissions:
+      packages: write
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
-
       - name: Set up Docker buildx
         uses: docker/setup-buildx-action@v2
-
       - name: Inspect builder
         run: |
           echo "Name:      ${{ steps.buildx.outputs.name }}"
@@ -25,7 +24,6 @@ jobs:
           echo "Status:    ${{ steps.buildx.outputs.status }}"
           echo "Flags:     ${{ steps.buildx.outputs.flags }}"
           echo "Platforms: ${{ steps.buildx.outputs.platforms }}"
-
       - name: Docker label info
         id: docklabel
         run: |
@@ -33,14 +31,12 @@ jobs:
           echo "::set-output name=sha::$GITHUB_SHA"
           echo "::set-output name=repo::$GITHUB_REPOSITORY"
           echo "::set-output name=timestamp::$(date '+%Y%m%d_%H%M%S')"
-
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v2
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Build and push
         uses: docker/build-push-action@v3
         with:
@@ -52,6 +48,5 @@ jobs:
             ghcr.io/${{ steps.docklabel.outputs.repo }}
           labels: |
             org.opencontainers.image.revision=${{ steps.docklabel.outputs.sha }}
-
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
