@@ -21,10 +21,8 @@ jobs:
           ./build_image.sh
       - name: Check outputs and ungzip
         run: |
-          gunzip sdcard.img.gz
-          mv sdcard.img rcn_os.img
-          gunzip sdcard_update.img.gz
-          mv sdcard_update.img rcn_os_update.img
+          gunzip rcn_os.img.gz
+          gunzip rcn_os_update.img.gz
           ls -l
       - name: Upload full image
         uses: actions/upload-artifact@v6
