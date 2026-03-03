@@ -1,3 +1,3 @@
 #!/bin/sh
 
-chroot_exec apk clean
+chroot_exec apk cache clean
