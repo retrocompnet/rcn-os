@@ -45,6 +45,4 @@ jobs:
         with:
           files: |
             rcn_os.img.gz
-            rcn_os.img.gz.sha256
             rcn_os_update.img.gz
-            rcn_os_update.img.gz.sha256
