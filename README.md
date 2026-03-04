@@ -2,7 +2,7 @@
 
 This is the operating system build scripts to create a Raspberry Pi
 operating system image based upon Alpine using the
-(raspi-alpine builder)[https://gitlab.com/raspi-alpine/builder]
+[raspi-alpine builder](https://gitlab.com/raspi-alpine/builder)
 docker image.
 
 To run these scripts locally, you really need to have docker
