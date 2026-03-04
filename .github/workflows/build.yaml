@@ -2,10 +2,14 @@ name: 'build'
 
 on:
   push:
-    branches:
-      - main
+    tags:
+      - '*'
 
 jobs:
+  create-release:
+    runs-on: ubuntu-latest
+    steps:
+
   build:
     runs-on: ubuntu-latest
     permissions:
@@ -19,21 +23,70 @@ jobs:
         id: build
         run: |
           ./build_image.sh
-      - name: Check outputs and ungzip
+      - name: Check outputs
         run: |
-          gunzip rcn_os.img.gz
-          gunzip rcn_os_update.img.gz
           ls -l
       - name: Upload full image
         uses: actions/upload-artifact@v6
+        id: rcn_os
         with:
           name: rcn_os
           path: |
-            rcn_os.img
+            rcn_os.img.gz
+            rcn_os.img.gz.sha256
+          if-no-files-found: error
       - name: Upload update
         uses: actions/upload-artifact@v6
+        id: rcn_os_update
         with:
           name: rcn_os_update
           path: |
-            rcn_os_update.img
+            rcn_os_update.img.gz
+            rcn_os_update.img.gz.sha256
           if-no-files-found: error
+      - name: Create release
+        uses: actions/create-release@v1
+        id: create_release
+        with:
+          draft: false
+          prerelease: false
+          release_name: ${{ github.ref }}
+          tag_name: ${{ github.ref }}
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+      - name: Upload full image to release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: |
+            rcn_os.img.gz
+          asset_content_type: application/gzip
+      - name: Upload full image sha256sum
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: |
+            rcn_os.img.gz.sha256
+          asset_content_type: text/plain
+      - name: Upload update image to release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: |
+            rcn_os_update.img.gz
+          asset_content_type: application/gzip
+      - name: Upload update image sha256sum
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: |
+            rcn_os_update.img.gz.sha256
+          asset_content_type: text/plain
