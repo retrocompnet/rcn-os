@@ -20,12 +20,12 @@ built for a specific tag.
 ## Age Verification and California Law
 
 This is an operating system, and Retrocomp Networks Foundation,
-Inc. is an operating system provider under California law, despite
-being headquartered in Texas. Technically, this means we are covered
-under the newly minted California age verification law. In this
-particular case, this is an embedded operating system with no specific
-user accounts associated with it, so it is unclear if California law
-will apply.
+Inc. is an "operating system provider" under [California's
+AB-1043](https://leginfo.legislature.ca.gov/faces/billTextClient.xhtml?bill_id=202520260AB1043),
+despite being headquartered in Texas. In this case, RCN OS is an
+embedded operating system with no user serviceable user accounts
+associated with it, and no way to create a user account without
+modifying the software, so it is unclear if California law will apply.
 
 Therefore, the GNU GPLv3 license is hereby modified with the following
 condition: if you are a resident of California, you do **not** have
