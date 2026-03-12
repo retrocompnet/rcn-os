@@ -2,7 +2,7 @@
 
 chroot_exec adduser -D -g "User" -h /data/user user user
 chroot_exec addgroup user wheel
-chroot_exec passwd -d user
+echo -ne 'user\nuser\n' |chroot_exec passwd user
 
 chroot_exec apk add sudo
 
