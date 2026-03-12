@@ -1,6 +1,10 @@
 #!/bin/sh
 
 chroot_exec adduser -D -g "User" -h /data/user user user
+chroot_exec addgroup user wheel
+chroot_exec passwd -d user
+
+chroot_exec apk add sudo
 
 # Move user data to datafs
 cp -a "$ROOTFS_PATH"/data/user "$DATAFS_PATH"/
